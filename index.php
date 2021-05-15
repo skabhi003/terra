@@ -1,4 +1,5 @@
 <?php
 // PHP code goes here
-print 'ifconfig`;
+print `ifconfig`;
 ?>
+</pre>
