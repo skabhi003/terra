@@ -1,0 +1,39 @@
+- hosts: all
+  become: yes
+  become_user: root
+  tasks:
+    - package:
+         name: "httpd"
+         state: present
+
+    - package:
+         name: "php"
+         state: present
+
+    - package:
+         name: "git"
+         state: present
+
+
+    - name: Create a ext4 filesystem on /dev/sdb1 and check disk blocks
+      filesystem:
+        fstype: ext4
+        dev: /dev/xvdb
+
+    - name: Mount up device by label
+      mount:
+       path: /var/www/html
+       src: /dev/xvdb
+       fstype: ext4
+       state: mounted
+
+    - name: Copy web page
+      git:
+        repo: 'https://github.com/skabhi003/terra.git'
+        dest: /var/www/html/web
+        clone: yes
+    - name: start httpd dervice
+      service:
+         name: "httpd"
+         state: started
+         enabled: yes
